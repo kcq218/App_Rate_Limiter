@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35027.167
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppRateLimiter.ReadService", "AppRateLimiter.ReadService\AppRateLimiter.ReadService.csproj", "{278C6D60-6B4F-4056-85FC-BD693D900693}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppRateLimiter.CheckBucketReadService", "AppRateLimiter.CheckBucketReadService\AppRateLimiter.CheckBucketReadService.csproj", "{278C6D60-6B4F-4056-85FC-BD693D900693}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppRateLimiter.Models", "AppRateLimiter.Models\AppRateLimiter.Models.csproj", "{040A8BD7-8822-40E2-8AA2-532A906BDB12}"
 EndProject

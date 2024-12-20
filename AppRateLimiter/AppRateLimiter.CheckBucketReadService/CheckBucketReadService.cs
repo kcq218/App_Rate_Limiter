@@ -5,16 +5,16 @@ using Microsoft.Extensions.Logging;
 
 namespace AppRateLimiter.ReadService
 {
-    public class Function1
+    public class CheckBucketReadService
     {
-        private readonly ILogger<Function1> _logger;
+        private readonly ILogger<CheckBucketReadService> _logger;
 
-        public Function1(ILogger<Function1> logger)
+        public CheckBucketReadService(ILogger<CheckBucketReadService> logger)
         {
             _logger = logger;
         }
 
-        [Function("Function1")]
+        [Function("CheckBucket")]
         public IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequest req)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
