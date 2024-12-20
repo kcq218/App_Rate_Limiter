@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace AppRateLimiter.Models;
+﻿namespace AppRateLimiter.Models;
 
 public partial class UrlMapping
 {
