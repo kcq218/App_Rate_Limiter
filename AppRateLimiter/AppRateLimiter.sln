@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppRateLimiter.ReadService"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppRateLimiter.Models", "AppRateLimiter.Models\AppRateLimiter.Models.csproj", "{040A8BD7-8822-40E2-8AA2-532A906BDB12}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppRateLimiter.DAL", "AppRateLimiter.DAL\AppRateLimiter.DAL.csproj", "{10BEE1A0-7C23-4DDC-AA95-A0CADA1A873D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{040A8BD7-8822-40E2-8AA2-532A906BDB12}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{040A8BD7-8822-40E2-8AA2-532A906BDB12}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{040A8BD7-8822-40E2-8AA2-532A906BDB12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10BEE1A0-7C23-4DDC-AA95-A0CADA1A873D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10BEE1A0-7C23-4DDC-AA95-A0CADA1A873D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10BEE1A0-7C23-4DDC-AA95-A0CADA1A873D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10BEE1A0-7C23-4DDC-AA95-A0CADA1A873D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
