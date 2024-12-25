@@ -13,7 +13,7 @@ var host = new HostBuilder()
         services.AddApplicationInsightsTelemetryWorkerService();
         services.AddScoped<IUnitofWork, UnitofWork>();
         services.AddScoped<ILogger<CheckBucketReadService>, Logger<CheckBucketReadService>>();
-        services.AddScoped<IReadService,ReadService>();
+        services.AddScoped<IReadService, ReadService>();
     })
     .Build();
 
