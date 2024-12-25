@@ -1,4 +1,8 @@
-﻿using System.Text;
+﻿using Microsoft.AspNetCore.WebUtilities;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Text.Json;
 
 namespace AppRateLimiter.CheckBucketReadService.Services
@@ -7,18 +11,19 @@ namespace AppRateLimiter.CheckBucketReadService.Services
     {
         public async Task<string> ReadAsync(string urlInput)
         {
-            var _httpClient = new HttpClient();
-            var requestUri = "https://urlread.azurewebsites.net/api/read?";
-            var requestContent = new StringContent(JsonSerializer.Serialize(new
+            var client = new HttpClient();
+
+            client.DefaultRequestHeaders.Accept.Add(
+                    new MediaTypeWithQualityHeaderValue("application/json"));
+            var query = new Dictionary<string, string>
             {
-                url = urlInput,
-            }), Encoding.UTF8, "application/json");
+                ["url"] = "https://www.google.com/"
+            };
 
-            var response = await _httpClient.PostAsync(requestUri, requestContent);
-            response.EnsureSuccessStatusCode();
-
-            var result = await response.Content.ReadAsStringAsync();
-            return result;
+            var url = "https://appratelimiterbs.azurewebsites.net/api/read?";
+            var response = await client.GetAsync(QueryHelpers.AddQueryString(url, query));
+            var responseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+            return JsonConvert.DeserializeObject<string>(responseBody);
         }
     }
 }
