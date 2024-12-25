@@ -24,6 +24,7 @@ namespace AppRateLimiter.ReadService
 
             try
             {
+                _logger.LogInformation("starting");
                 string url = req.Query["url"];
 
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
