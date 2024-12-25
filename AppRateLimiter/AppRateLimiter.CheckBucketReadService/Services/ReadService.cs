@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.WebUtilities;
-using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
-using System.Text;
-using System.Text.Json;
 
 namespace AppRateLimiter.CheckBucketReadService.Services
 {
