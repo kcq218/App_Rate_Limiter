@@ -12,12 +12,13 @@ namespace AppRateLimiter.CheckBucketReadService.Services
 
             client.DefaultRequestHeaders.Accept.Add(
                     new MediaTypeWithQualityHeaderValue("application/json"));
+
             var query = new Dictionary<string, string>
             {
-                ["url"] = "https://www.google.com/"
+                ["url"] = urlInput
             };
 
-            var url = "https://appratelimiterbs.azurewebsites.net/api/read?";
+            var url = "https://urlread.azurewebsites.net/api/read?";
             var response = await client.GetAsync(QueryHelpers.AddQueryString(url, query));
             var responseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
             return JsonConvert.DeserializeObject<string>(responseBody);
