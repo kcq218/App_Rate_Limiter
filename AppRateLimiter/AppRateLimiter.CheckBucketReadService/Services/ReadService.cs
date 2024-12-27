@@ -19,8 +19,8 @@ namespace AppRateLimiter.CheckBucketReadService.Services
 
             var url = "https://appratelimiterbs.azurewebsites.net/api/read?";
             var response = await client.GetAsync(QueryHelpers.AddQueryString(url, query));
-            var responseBody = response.Content.ReadAsStringAsync().ConfigureAwait(false);
-            return JsonConvert.DeserializeObject<string>(await responseBody);
+            var responseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+            return JsonConvert.DeserializeObject<string>(responseBody);
         }
     }
 }
