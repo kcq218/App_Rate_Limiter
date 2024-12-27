@@ -33,7 +33,7 @@ namespace AppRateLimiter.ReadService
 
                 if (!string.IsNullOrWhiteSpace(url))
                 {
-                    return new OkObjectResult(_readService.ReadAsync(url));
+                    return new OkObjectResult( await _readService.ReadAsync(url));
                 }
 
                 return new OkObjectResult("empty body request");
