@@ -25,22 +25,22 @@ namespace AppRateLimiter.ReadService
             try
             {
                 _logger.LogInformation("starting");
-                string url = req.Query["url"];
+                string? url = req.Query["url"].FirstOrDefault();
 
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-                dynamic data = JsonConvert.DeserializeObject(requestBody);
+                dynamic? data = JsonConvert.DeserializeObject(requestBody);
                 url = url ?? data?.url;
 
                 if (!string.IsNullOrWhiteSpace(url))
                 {
-                    return new OkObjectResult( await _readService.ReadAsync(url));
+                    return new OkObjectResult(await _readService.ReadAsync(url));
                 }
 
                 return new OkObjectResult("empty body request");
             }
             catch (Exception e)
             {
-                _logger.LogError(e.ToString());
+                _logger.LogError("An error occurred: {Exception}", e);
 
                 return new OkObjectResult(e.ToString());
             }
