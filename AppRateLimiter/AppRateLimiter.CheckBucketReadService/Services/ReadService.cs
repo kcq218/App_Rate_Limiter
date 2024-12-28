@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.WebUtilities;
+﻿using AppRateLimiter.DAL;
+using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 
@@ -13,15 +14,15 @@ namespace AppRateLimiter.CheckBucketReadService.Services
             client.DefaultRequestHeaders.Accept.Add(
                     new MediaTypeWithQualityHeaderValue("application/json"));
 
-            var query = new Dictionary<string, string>
+            var query = new Dictionary<string, string?>
             {
                 ["url"] = urlInput
             };
 
-            var url = "https://urlread.azurewebsites.net/api/read?";
+            var url = Globals.ReadUrl;
             var response = await client.GetAsync(QueryHelpers.AddQueryString(url, query));
             var responseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-            return JsonConvert.DeserializeObject<string>(responseBody);
+            return JsonConvert.DeserializeObject<string>(responseBody) ?? string.Empty;
         }
     }
 }
