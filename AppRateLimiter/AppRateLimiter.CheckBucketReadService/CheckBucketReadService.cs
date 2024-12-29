@@ -1,9 +1,12 @@
 using AppRateLimiter.CheckBucketReadService.Services;
+using AppRateLimiter.DAL;
+using Azure.Core;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
+using Microsoft.Net.Http.Headers;
+using System.Net.Http.Headers;
 
 namespace AppRateLimiter.ReadService
 {
@@ -12,12 +15,14 @@ namespace AppRateLimiter.ReadService
         private readonly ILogger<CheckBucketReadService> _logger;
         private readonly IReadService _readService;
         private readonly ICheckUrlService _checkUrlService;
+        private readonly IUnitofWork _unitOfWork;
 
-        public CheckBucketReadService(ILogger<CheckBucketReadService> logger, IReadService readService, ICheckUrlService checkUrlService)
+        public CheckBucketReadService(ILogger<CheckBucketReadService> logger, IUnitofWork unitofWork, IReadService readService, ICheckUrlService checkUrlService)
         {
             _logger = logger;
             _readService = readService;
             _checkUrlService = checkUrlService;
+            _unitOfWork = unitofWork;
         }
 
         [Function("read")]
@@ -27,6 +32,21 @@ namespace AppRateLimiter.ReadService
             try
             {
                 _logger.LogInformation("starting");
+
+                var authorization = req.Headers[HeaderNames.Authorization];
+
+
+                if (AuthenticationHeaderValue.TryParse(authorization, out var headerValue))
+                {
+                    // we have a valid AuthenticationHeaderValue that has the following details:
+
+                    var scheme = headerValue.Scheme;
+                    var parameter = headerValue.Parameter;
+
+                    // scheme will be "Bearer"
+                    // parmameter will be the token itself.
+                }
+
 
                 var url = await _checkUrlService.CheckUrl(req);
 
