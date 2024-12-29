@@ -14,6 +14,7 @@ var host = new HostBuilder()
         services.AddScoped<IUnitofWork, UnitofWork>();
         services.AddScoped<ILogger<CheckBucketReadService>, Logger<CheckBucketReadService>>();
         services.AddScoped<IReadService, ReadService>();
+        services.AddScoped<ICheckUrlService, CheckUrlService>();
     })
     .Build();
 

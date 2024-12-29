@@ -14,7 +14,7 @@ namespace AppRateLimiter.DAL
 
         public async Task<T> GetByIdAsync(int id)
         {
-            return await _context.Set<T>().FindAsync(id);
+            return await _context.Set<T>().FindAsync(id) ?? throw new InvalidOperationException("Entity not found");
         }
 
         public async Task<IEnumerable<T>> GetAllAsync()

@@ -8,12 +8,7 @@ public partial class DbAll01ProdUswest001Context : DbContext
 
     public DbAll01ProdUswest001Context()
     {
-        _connectionString = Environment.GetEnvironmentVariable("cs-urlshortener");
-    }
-
-    public DbAll01ProdUswest001Context(DbContextOptions<DbAll01ProdUswest001Context> options)
-        : base(options)
-    {
+        _connectionString = Environment.GetEnvironmentVariable("cs-urlshortener") ?? throw new InvalidOperationException("Connection string not found.");
     }
 
     public virtual DbSet<GeneratedKey> GeneratedKeys { get; set; }
