@@ -11,11 +11,13 @@ namespace AppRateLimiter.ReadService
     {
         private readonly ILogger<CheckBucketReadService> _logger;
         private readonly IReadService _readService;
+        private readonly ICheckUrlService _checkUrlService;
 
-        public CheckBucketReadService(ILogger<CheckBucketReadService> logger, IReadService readService)
+        public CheckBucketReadService(ILogger<CheckBucketReadService> logger, IReadService readService, ICheckUrlService checkUrlService)
         {
             _logger = logger;
             _readService = readService;
+            _checkUrlService = checkUrlService;
         }
 
         [Function("read")]
@@ -25,11 +27,8 @@ namespace AppRateLimiter.ReadService
             try
             {
                 _logger.LogInformation("starting");
-                string? url = req.Query["url"].FirstOrDefault();
 
-                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-                dynamic? data = JsonConvert.DeserializeObject(requestBody);
-                url = url ?? data?.url;
+                var url = await _checkUrlService.CheckUrl(req);
 
                 if (!string.IsNullOrWhiteSpace(url))
                 {
