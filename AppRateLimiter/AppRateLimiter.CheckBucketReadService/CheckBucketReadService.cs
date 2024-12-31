@@ -1,9 +1,9 @@
 using AppRateLimiter.CheckBucketReadService.Services;
+using AppRateLimiter.DAL;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 
 namespace AppRateLimiter.ReadService
 {
@@ -12,12 +12,16 @@ namespace AppRateLimiter.ReadService
         private readonly ILogger<CheckBucketReadService> _logger;
         private readonly IReadService _readService;
         private readonly ICheckUrlService _checkUrlService;
+        private readonly IGetAppId _getAppId;
+        private readonly IUnitofWork _unitOfWork;
 
-        public CheckBucketReadService(ILogger<CheckBucketReadService> logger, IReadService readService, ICheckUrlService checkUrlService)
+        public CheckBucketReadService(ILogger<CheckBucketReadService> logger, IUnitofWork unitofWork, IReadService readService, ICheckUrlService checkUrlService, IGetAppId getAppId)
         {
             _logger = logger;
             _readService = readService;
             _checkUrlService = checkUrlService;
+            _unitOfWork = unitofWork;
+            _getAppId = getAppId;
         }
 
         [Function("read")]
@@ -28,6 +32,7 @@ namespace AppRateLimiter.ReadService
             {
                 _logger.LogInformation("starting");
 
+                var appId = _getAppId.GetAppId(req);
                 var url = await _checkUrlService.CheckUrl(req);
 
                 if (!string.IsNullOrWhiteSpace(url))
