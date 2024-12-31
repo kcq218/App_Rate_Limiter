@@ -11,12 +11,10 @@ namespace AppRateLimiter.CheckBucketReadService.Services
             _unitofWork = unitofWork;
         }
 
-        public void RefillBucket()
+        public async Task RefillBucketAsync(string appId)
         {
             // Refill bucket logic
-            var bucketRepo = _unitofWork.UserBucketRepository;
-
-
+            var bucketRepo = await _unitofWork.UserBucketRepository.FindAsync(m => m.ClientId == appId);
         }
     }
 }

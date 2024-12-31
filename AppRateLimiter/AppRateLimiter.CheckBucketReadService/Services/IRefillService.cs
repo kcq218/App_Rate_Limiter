@@ -2,6 +2,6 @@
 {
     public interface IRefillService
     {
-        public void RefillBucket();
+        public Task RefillBucketAsync(string appId);
     }
 }
