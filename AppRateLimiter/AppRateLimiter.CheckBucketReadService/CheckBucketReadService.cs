@@ -12,10 +12,10 @@ namespace AppRateLimiter.ReadService
         private readonly ILogger<CheckBucketReadService> _logger;
         private readonly IReadService _readService;
         private readonly ICheckUrlService _checkUrlService;
-        private readonly IGetAppId _getAppId;
+        private readonly ICheckAppId _getAppId;
         private readonly IUnitofWork _unitOfWork;
 
-        public CheckBucketReadService(ILogger<CheckBucketReadService> logger, IUnitofWork unitofWork, IReadService readService, ICheckUrlService checkUrlService, IGetAppId getAppId)
+        public CheckBucketReadService(ILogger<CheckBucketReadService> logger, IUnitofWork unitofWork, IReadService readService, ICheckUrlService checkUrlService, ICheckAppId getAppId)
         {
             _logger = logger;
             _readService = readService;
