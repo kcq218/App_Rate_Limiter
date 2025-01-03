@@ -12,16 +12,16 @@ namespace AppRateLimiter.ReadService
         private readonly ILogger<CheckBucketReadService> _logger;
         private readonly IReadService _readService;
         private readonly ICheckUrlService _checkUrlService;
-        private readonly ICheckAppId _getAppId;
-        private readonly IUnitofWork _unitOfWork;
+        private readonly IGetAppUser _getAppUser;
+        private readonly IRefillService _refillService;
 
-        public CheckBucketReadService(ILogger<CheckBucketReadService> logger, IUnitofWork unitofWork, IReadService readService, ICheckUrlService checkUrlService, ICheckAppId getAppId)
+        public CheckBucketReadService(ILogger<CheckBucketReadService> logger, IReadService readService, ICheckUrlService checkUrlService, IGetAppUser getAppUser, IRefillService refillService)
         {
             _logger = logger;
             _readService = readService;
             _checkUrlService = checkUrlService;
-            _unitOfWork = unitofWork;
-            _getAppId = getAppId;
+            _getAppUser = getAppUser;
+            _refillService = refillService;            
         }
 
         [Function("read")]
@@ -32,7 +32,8 @@ namespace AppRateLimiter.ReadService
             {
                 _logger.LogInformation("starting");
 
-                var appId = _getAppId.GetAppId(req);
+                var user = _getAppUser.GetUser(req);
+                await _refillService.RefillBucketAsync(user.Result.First().ClientId);
                 var url = await _checkUrlService.CheckUrl(req);
 
                 if (!string.IsNullOrWhiteSpace(url))
