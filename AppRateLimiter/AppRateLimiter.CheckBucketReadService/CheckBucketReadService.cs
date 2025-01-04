@@ -1,5 +1,4 @@
 using AppRateLimiter.CheckBucketReadService.Services;
-using AppRateLimiter.DAL;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
@@ -14,14 +13,16 @@ namespace AppRateLimiter.ReadService
         private readonly ICheckUrlService _checkUrlService;
         private readonly IGetAppUser _getAppUser;
         private readonly IRefillService _refillService;
+        private readonly ICheckRateLimitService _checkRateLimitService;
 
-        public CheckBucketReadService(ILogger<CheckBucketReadService> logger, IReadService readService, ICheckUrlService checkUrlService, IGetAppUser getAppUser, IRefillService refillService)
+        public CheckBucketReadService(ILogger<CheckBucketReadService> logger, IReadService readService, ICheckUrlService checkUrlService, IGetAppUser getAppUser, IRefillService refillService, ICheckRateLimitService rateLimitService)
         {
             _logger = logger;
             _readService = readService;
             _checkUrlService = checkUrlService;
             _getAppUser = getAppUser;
-            _refillService = refillService;            
+            _refillService = refillService;
+            _checkRateLimitService = rateLimitService;
         }
 
         [Function("read")]
@@ -32,8 +33,20 @@ namespace AppRateLimiter.ReadService
             {
                 _logger.LogInformation("starting");
 
-                var user = _getAppUser.GetUser(req);
-                await _refillService.RefillBucketAsync(user.Result.First().ClientId);
+                var user = _getAppUser.GetUser(req).Result?.FirstOrDefault();
+
+                _refillService.RefillBucketAsync(user);
+
+                var withinRateLimit = await _checkRateLimitService.WithinRateLimit(user);
+
+                if (!withinRateLimit)
+                {
+                    var result = new ObjectResult("Too many requests you have been rate limited");
+                    result.StatusCode = StatusCodes.Status429TooManyRequests;
+                    return result;
+                }
+
+
                 var url = await _checkUrlService.CheckUrl(req);
 
                 if (!string.IsNullOrWhiteSpace(url))

@@ -3,6 +3,7 @@ using AppRateLimiter.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Net.Http.Headers;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 using System.Net.Http.Headers;
 
 namespace AppRateLimiter.CheckBucketReadService.Services
@@ -10,12 +11,13 @@ namespace AppRateLimiter.CheckBucketReadService.Services
     public class GetAppUser : IGetAppUser
     {
         private IUnitofWork unitofWork;
-        private string _appid;
+        private string? _appid;
         private IEnumerable<UserBucket> _user;
 
         public GetAppUser(IUnitofWork unitofWork)
         {
             this.unitofWork = unitofWork;
+            _user = Enumerable.Empty<UserBucket>();
         }
 
         public async Task<IEnumerable<UserBucket>> GetUser(HttpRequest req)
@@ -35,10 +37,11 @@ namespace AppRateLimiter.CheckBucketReadService.Services
 
             if (_user == null || !_user.Any())
             {
+                var remoteIpAddress = req.HttpContext.Connection.RemoteIpAddress?.ToString() ?? IPAddress.None.ToString();
                 var newUser = new UserBucket
                 {
                     ClientId = _appid,
-                    IpAddress = req.HttpContext.Connection.RemoteIpAddress.ToString(),
+                    IpAddress = remoteIpAddress,
                     LastAccessed = DateTime.Now,
                     RefillRateSeconds = 30,
                     BucketCount = 2,

@@ -1,4 +1,5 @@
 ﻿using AppRateLimiter.DAL;
+using AppRateLimiter.Models;
 
 namespace AppRateLimiter.CheckBucketReadService.Services
 {
@@ -11,10 +12,20 @@ namespace AppRateLimiter.CheckBucketReadService.Services
             _unitofWork = unitofWork;
         }
 
-        public async Task RefillBucketAsync(string appId)
+        public void RefillBucketAsync(UserBucket user)
         {
             // Refill bucket logic
-            var bucketRepo = await _unitofWork.UserBucketRepository.FindAsync(m => m.ClientId == appId);
+            var timeLastAccessed = user.LastAccessed;
+            var timeNow = DateTime.Now;
+            var timeDifference = timeNow - timeLastAccessed;
+
+            if (timeDifference.HasValue && user.RefillRateSeconds.HasValue
+                && timeDifference.Value.Seconds >= user.RefillRateSeconds.Value)
+            {
+                user.BucketCount = user.BucketLimit;
+                _unitofWork.UserBucketRepository.Update(user);
+                _unitofWork.Save();
+            }
         }
     }
 }
