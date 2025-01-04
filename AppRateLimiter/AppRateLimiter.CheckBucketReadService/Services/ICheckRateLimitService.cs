@@ -2,8 +2,8 @@
 
 namespace AppRateLimiter.CheckBucketReadService.Services
 {
-    public interface IRefillService
+    public interface ICheckRateLimitService
     {
-        public void RefillBucketAsync(UserBucket user);
+        public Task<bool> WithinRateLimit(UserBucket user);
     }
 }
