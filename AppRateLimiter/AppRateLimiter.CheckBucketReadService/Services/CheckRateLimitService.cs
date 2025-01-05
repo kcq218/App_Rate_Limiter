@@ -16,6 +16,7 @@ namespace AppRateLimiter.CheckBucketReadService.Services
         {
             var result = false;
             user.BucketCount = --user.BucketCount;
+            user.LastAccessed = DateTime.UtcNow;
             _unitOfWork.UserBucketRepository.Update(user);
             _unitOfWork.Save();
 
