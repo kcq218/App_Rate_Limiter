@@ -12,7 +12,7 @@ namespace AppRateLimiter.CheckBucketReadService.Services
             _unitofWork = unitofWork;
         }
 
-        public void RefillBucketAsync(UserBucket user)
+        public void RefillBucket(UserBucket user)
         {
             // Refill bucket logic
             // set last accessed if refill

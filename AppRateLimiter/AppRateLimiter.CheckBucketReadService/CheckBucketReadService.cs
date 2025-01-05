@@ -40,7 +40,7 @@ namespace AppRateLimiter.ReadService
                     return new BadRequestObjectResult("User object not found");
                 }
 
-                _refillService.RefillBucketAsync(userObj);
+                _refillService.RefillBucket(userObj);
 
                 var withinRateLimit = await _checkRateLimitService.WithinRateLimit(userObj);
 
