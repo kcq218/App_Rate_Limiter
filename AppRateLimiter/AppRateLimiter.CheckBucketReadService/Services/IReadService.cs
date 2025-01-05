@@ -1,7 +1,9 @@
-﻿namespace AppRateLimiter.CheckBucketReadService.Services
+﻿using Microsoft.AspNetCore.Http;
+
+namespace AppRateLimiter.CheckBucketReadService.Services
 {
     public interface IReadService
     {
-        Task<string> ReadAsync(string url);
+        Task<string> ReadAsync(HttpRequest request);
     }
 }

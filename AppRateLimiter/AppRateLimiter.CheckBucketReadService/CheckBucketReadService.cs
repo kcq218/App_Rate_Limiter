@@ -10,16 +10,14 @@ namespace AppRateLimiter.ReadService
     {
         private readonly ILogger<CheckBucketReadService> _logger;
         private readonly IReadService _readService;
-        private readonly ICheckUrlService _checkUrlService;
         private readonly IGetAppUser _getAppUser;
         private readonly IRefillService _refillService;
         private readonly ICheckRateLimitService _checkRateLimitService;
 
-        public CheckBucketReadService(ILogger<CheckBucketReadService> logger, IReadService readService, ICheckUrlService checkUrlService, IGetAppUser getAppUser, IRefillService refillService, ICheckRateLimitService rateLimitService)
+        public CheckBucketReadService(ILogger<CheckBucketReadService> logger, IReadService readService, IGetAppUser getAppUser, IRefillService refillService, ICheckRateLimitService rateLimitService)
         {
             _logger = logger;
             _readService = readService;
-            _checkUrlService = checkUrlService;
             _getAppUser = getAppUser;
             _refillService = refillService;
             _checkRateLimitService = rateLimitService;
@@ -33,16 +31,18 @@ namespace AppRateLimiter.ReadService
             {
                 _logger.LogInformation("starting");
 
-                var user = _getAppUser.GetUser(req).Result?.FirstOrDefault();
+                var user = await _getAppUser.GetUser(req);
 
-                if (user == null)
+                var userObj = user.FirstOrDefault();
+
+                if (userObj == null)
                 {
-                    return new BadRequestObjectResult("User not found");
+                    return new BadRequestObjectResult("User object not found");
                 }
 
-                _refillService.RefillBucketAsync(user);
+                _refillService.RefillBucketAsync(userObj);
 
-                var withinRateLimit = await _checkRateLimitService.WithinRateLimit(user);
+                var withinRateLimit = await _checkRateLimitService.WithinRateLimit(userObj);
 
                 if (!withinRateLimit)
                 {
@@ -50,16 +50,10 @@ namespace AppRateLimiter.ReadService
                     result.StatusCode = StatusCodes.Status429TooManyRequests;
                     return result;
                 }
-
-
-                var url = await _checkUrlService.CheckUrl(req);
-
-                if (!string.IsNullOrWhiteSpace(url))
+                else
                 {
-                    return new OkObjectResult(await _readService.ReadAsync(url));
+                    return new OkObjectResult(await _readService.ReadAsync(req));
                 }
-
-                return new BadRequestObjectResult("empty body request");
             }
             catch (Exception e)
             {
