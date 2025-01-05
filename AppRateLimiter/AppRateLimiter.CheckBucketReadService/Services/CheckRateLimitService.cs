@@ -14,9 +14,16 @@ namespace AppRateLimiter.CheckBucketReadService.Services
 
         public Task<bool> WithinRateLimit(UserBucket user)
         {
+            // we want to set last accessed only when user hit 0
+
             var result = false;
             user.BucketCount = --user.BucketCount;
-            user.LastAccessed = DateTime.UtcNow;
+            if (user.BucketCount == 0)
+            {
+                user.LastAccessed = DateTime.Now;
+            }
+            user.UpdatedDate = DateTime.Now;
+            user.UpdatedBy = user.ClientId ?? string.Empty;
             _unitOfWork.UserBucketRepository.Update(user);
             _unitOfWork.Save();
 

@@ -35,6 +35,11 @@ namespace AppRateLimiter.ReadService
 
                 var user = _getAppUser.GetUser(req).Result?.FirstOrDefault();
 
+                if (user == null)
+                {
+                    return new BadRequestObjectResult("User not found");
+                }
+
                 _refillService.RefillBucketAsync(user);
 
                 var withinRateLimit = await _checkRateLimitService.WithinRateLimit(user);
@@ -54,13 +59,13 @@ namespace AppRateLimiter.ReadService
                     return new OkObjectResult(await _readService.ReadAsync(url));
                 }
 
-                return new OkObjectResult("empty body request");
+                return new BadRequestObjectResult("empty body request");
             }
             catch (Exception e)
             {
                 _logger.LogError("An error occurred: {Exception}", e);
 
-                return new OkObjectResult(e.ToString());
+                return new BadRequestObjectResult(e.ToString());
             }
         }
     }
