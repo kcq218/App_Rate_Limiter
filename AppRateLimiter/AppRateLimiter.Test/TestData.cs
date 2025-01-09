@@ -1,11 +1,24 @@
-﻿namespace AppRateLimiter.Test
+﻿using AppRateLimiter.Models;
+
+namespace AppRateLimiter.Test
 {
-    [TestClass]
-    public sealed class TestData
+    public static class TestData
     {
-        [TestMethod]
-        public void TestMethod1()
+        public static UserBucket MockUser()
         {
+            return new UserBucket
+            {
+                BucketCount = 2,
+                ClientId = "test",
+                CreatedBy = "test",
+                CreatedDate = System.DateTime.Now,
+                Id = 1,
+                LastAccessed = System.DateTime.Now,
+                UpdatedBy = "test",
+                UpdatedDate = System.DateTime.Now,
+                BucketLimit = 2,
+                RefillRateSeconds = 30
+            };
         }
     }
 }
