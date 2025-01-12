@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace AppRateLimiter.CheckBucketReadService.Services
 {
-    public interface IGetAppUser
+    public interface IGetAppUserService
     {
         public Task<IEnumerable<UserBucket>> GetUser(HttpRequest req);
     }

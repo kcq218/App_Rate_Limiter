@@ -10,11 +10,11 @@ namespace AppRateLimiter.ReadService
     {
         private readonly ILogger<CheckBucketReadService> _logger;
         private readonly IReadService _readService;
-        private readonly IGetAppUser _getAppUser;
+        private readonly IGetAppUserService _getAppUser;
         private readonly IRefillService _refillService;
         private readonly ICheckRateLimitService _checkRateLimitService;
 
-        public CheckBucketReadService(ILogger<CheckBucketReadService> logger, IReadService readService, IGetAppUser getAppUser, IRefillService refillService, ICheckRateLimitService rateLimitService)
+        public CheckBucketReadService(ILogger<CheckBucketReadService> logger, IReadService readService, IGetAppUserService getAppUser, IRefillService refillService, ICheckRateLimitService rateLimitService)
         {
             _logger = logger;
             _readService = readService;
