@@ -8,13 +8,13 @@ using System.Net.Http.Headers;
 
 namespace AppRateLimiter.CheckBucketReadService.Services
 {
-    public class GetAppUser : IGetAppUser
+    public class GetAppUserService : IGetAppUserService
     {
         private IUnitofWork unitofWork;
         private string? _appid;
         private IEnumerable<UserBucket> _user;
 
-        public GetAppUser(IUnitofWork unitofWork)
+        public GetAppUserService(IUnitofWork unitofWork)
         {
             this.unitofWork = unitofWork;
             _user = Enumerable.Empty<UserBucket>();
