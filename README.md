@@ -32,6 +32,8 @@ Use await all the way to the top level
 
 Use appinsights transaction search feature to look at logs 
 
+For Github actions modify AZURE_FUNCTIONAPP_PACKAGE_PATH to the location of your project file in order for github actions to properly build and deploy.
+
 ![AppRateLimiter drawio](https://github.com/user-attachments/assets/f3adaf1e-f57e-44b3-ad32-52fa6f6e176d)
 
 To do List:
