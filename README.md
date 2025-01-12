@@ -32,5 +32,7 @@ Use await all the way to the top level
 
 Use appinsights transaction search feature to look at logs 
 
+![AppRateLimiter drawio](https://github.com/user-attachments/assets/f3adaf1e-f57e-44b3-ad32-52fa6f6e176d)
+
 To do List:
 Setup Rolling window rate limiter for other endpoints
